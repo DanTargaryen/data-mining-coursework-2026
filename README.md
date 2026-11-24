@@ -30,7 +30,7 @@ python3.11 -m venv .venv
 .venv/bin/python run.py --data ../DM_2026_Dataset --out results/reproduced
 ```
 
-- `--task weather` 和 `--task thyroid` 可分别运行。任务三默认预测 `CO2 (ppm)`。本地课程文件末列 `OT` 自动映射到同一目标。可用 `--weather-csv /path/to/mpi_roof_2020a.csv` 直接读取气象站原始文件。`--target 'T (degC)'` 可运行温度对照，请另设 `--out`。
+- `--task weather` 和 `--task thyroid` 可分别运行。任务三默认预测 `CO2 (ppm)`。旧版数据若使用 `OT` 表头，程序也会映射到同一目标。可用 `--weather-csv /path/to/mpi_roof_2020a.csv` 直接读取气象站原始文件。`--target 'T (degC)'` 可运行温度对照，请另设 `--out`。
 - 天气按目标时间切分约 70/15/15。全变量岭回归为主实验，使用连续 12 个时刻的全部 21 项指标（252 维）。单变量岭回归只用历史 CO₂，作为对照。标准化仅拟合训练集，两个岭回归的正则各按验证 MAE 确定。图 3 展示全变量模型。预测文件同时保存下一时刻浓度和相对最新观测的变化量，单位均为 ppm。
 - 课程文件与[气象站原始 CSV](https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip) 的 26,200 行时间戳及 21 列数值按行一致。
 - CO₂ 误差差异分析可在任务 3 跑完后复现。若使用上面的时间序列命令，运行 `.venv/bin/python analysis_weather.py --results results/reproduced`。脚本对已有测试预测做一天及两天时间块重抽样，保存 `weather-block-bootstrap.json`。它使用训练段确定的快速变化阈值，不会重新训练或选择模型。
