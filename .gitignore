@@ -1,0 +1,11 @@
+# Local data, model weights, environments and experiment output.
+/DM_2026_Dataset/
+/.venv*/
+/.image-cache/
+/results/
+/reproduced*/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+.DS_Store
