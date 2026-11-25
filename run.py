@@ -32,7 +32,7 @@ SEED = 42
 HISTORY = 12
 CO2_TARGET = 'CO2 (ppm)'
 WEATHER_MAIN_MODEL = 'ridge_all'
-DEFAULT_DATA = Path(__file__).resolve().parents[2] / 'DM_2026_Dataset'
+DEFAULT_DATA = Path(__file__).resolve().parents[1] / 'DM_2026_Dataset'
 DEFAULT_OUT = Path(__file__).resolve().parent / 'results'
 
 

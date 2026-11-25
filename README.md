@@ -2,7 +2,7 @@
 
 **GitHub 代码仓库**：[DanTargaryen/data-mining-coursework-2026](https://github.com/DanTargaryen/data-mining-coursework-2026)
 
-在 Python 3.11.15 / macOS arm64 上验证。原始输入是课程发布的两个图像 ZIP、`weather.csv` 和 `thyroid.zip`。脚本直接读取原始文件。把 `DM_2026_Dataset` 放在代码目录旁边，或将以下命令的 `--data` 改为实际数据目录。
+原始实验在 Python 3.11.15 / macOS arm64 上验证。原始输入是课程发布的两个图像 ZIP、`weather.csv` 和 `thyroid.zip`。脚本直接读取原始文件。将 `DM_2026_Dataset` 放在仓库目录的同一级，或用 `--data` 指定实际数据目录。
 
 ## 任务 1 和 2：图像聚类与异常检测
 
@@ -22,14 +22,15 @@ python3.11 -m venv .venv-images
 
 ## 任务 3 和 4：时间序列与表格异常检测
 
-结果目录有逐样本预测、训练/校准清单、指标 JSON、PDF 与 PNG 图。输入为课程发布的 `weather.csv` 和 `thyroid.zip`，脚本只读数据，无需解压 Thyroid 或下载权重。
+结果目录有逐样本预测、训练/校准清单、指标 JSON、PDF 与 PNG 图。输入为课程发布的 `weather.csv` 和 `thyroid.zip`，脚本只读数据，无需解压 Thyroid 或下载权重。下列依赖与运行方式已在 Python 3.12.3 / Windows x64 上复跑验证。
 
 ```sh
-python3.11 -m venv .venv
+python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python run.py --data ../DM_2026_Dataset --out results/reproduced
+.venv/bin/python run.py --out results/reproduced
 ```
 
+- 省略 `--data` 时，`run.py` 从脚本所在位置定位与仓库同级的 `DM_2026_Dataset`，与当前工作目录无关。数据在其他目录时，运行 `.venv/bin/python run.py --data /path/to/data --out results/reproduced`。
 - `--task weather` 和 `--task thyroid` 可分别运行。任务三默认预测 `CO2 (ppm)`。旧版数据若使用 `OT` 表头，程序也会映射到同一目标。可用 `--weather-csv /path/to/mpi_roof_2020a.csv` 直接读取气象站原始文件。`--target 'T (degC)'` 可运行温度对照，请另设 `--out`。
 - 天气按目标时间切分约 70/15/15。全变量岭回归为主实验，使用连续 12 个时刻的全部 21 项指标（252 维）。单变量岭回归只用历史 CO₂，作为对照。标准化仅拟合训练集，两个岭回归的正则各按验证 MAE 确定。图 3 展示全变量模型。预测文件同时保存下一时刻浓度和相对最新观测的变化量，单位均为 ppm。
 - 课程文件与[气象站原始 CSV](https://www.bgc-jena.mpg.de/wetter/data/mpi_roof_2020a.zip) 的 26,200 行时间戳及 21 列数值按行一致。
